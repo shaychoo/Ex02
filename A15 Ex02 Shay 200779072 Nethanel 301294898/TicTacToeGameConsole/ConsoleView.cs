@@ -16,7 +16,7 @@ namespace TicTacToeGameConsole
         {
             r_GameManager = new GameManager();
             clearScreen();
-            Console.WriteLine("Netanel is Pah!");
+            Console.WriteLine("tembel is Pah!");
             start();
         }
 
