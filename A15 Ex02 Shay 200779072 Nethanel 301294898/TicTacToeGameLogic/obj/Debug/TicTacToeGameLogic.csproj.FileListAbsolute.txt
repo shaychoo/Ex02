@@ -1,0 +1,5 @@
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\bin\Debug\TicTacToeGameLogic.dll
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\bin\Debug\TicTacToeGameLogic.pdb
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\obj\Debug\TicTacToeGameLogic.dll
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\obj\Debug\TicTacToeGameLogic.pdb
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\obj\Debug\TicTacToeGameLogic.csprojResolveAssemblyReference.cache

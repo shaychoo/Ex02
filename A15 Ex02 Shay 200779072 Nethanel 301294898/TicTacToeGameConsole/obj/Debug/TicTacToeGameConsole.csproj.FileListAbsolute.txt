@@ -1,0 +1,10 @@
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.csprojResolveAssemblyReference.cache
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameConsole.exe
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameConsole.pdb
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\Ex02.ConsoleUtils.dll
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameLogic.dll
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameLogic.pdb
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.exe
+C:\C#\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.pdb
+C:\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.exe
+C:\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.pdb
