@@ -10,21 +10,39 @@ namespace TicTacToeGameConsole
         private const string k_StopKey = "q";
         private const string k_PlayerOneName = "Player 1";
         private const string k_PlayerTwoName = "Player 2";
+
+        private string firstPlayerName
+        {
+            get
+            {
+                return r_GameManager.GameType == Enums.eGameType.PlayerVsPlayer
+                                   ? k_PlayerOneName : Enums.ePlayer.Player.ToString();
+            }
+
+        }
+
+        private string secondPlayerName
+        {
+            get
+            {
+                return r_GameManager.GameType == Enums.eGameType.PlayerVsPlayer
+                                       ? k_PlayerTwoName : Enums.ePlayer.Computer.ToString();
+            }
+        }
         private readonly GameManager r_GameManager;
 
         public ConsoleView()
         {
             r_GameManager = new GameManager();
             clearScreen();
-            Console.WriteLine("tembel is Pah!");
             start();
         }
 
-        private string getPlayerName()
+        private void start()
         {
-            string playerName = r_GameManager.CurrentPlayerTurn == Enums.ePlayer.PlayerOne
-                ? k_PlayerOneName : k_PlayerTwoName;
-            return playerName;
+            getGameStartParameters();
+            playGame();
+            Console.ReadLine();
         }
 
         private void getGameStartParameters()
@@ -45,6 +63,42 @@ namespace TicTacToeGameConsole
             clearScreen();
         }
 
+        private string getPlayerName()
+        {
+            string playerName = r_GameManager.CurrentPlayerTurn == Enums.ePlayer.PlayerOne
+                ? k_PlayerOneName : k_PlayerTwoName;
+            return playerName;
+        }
+
+        private void playGame()
+        {
+            bool playAnotherRound;
+            do
+            {
+                playRound();
+                showEndRound(out playAnotherRound);
+            } while (playAnotherRound);
+            showEndGame();
+        }
+
+        private void playRound()
+        {
+            bool roundIsOver;
+            r_GameManager.InitializeRound();
+            string errorMessage;
+            do
+            {
+                errorMessage = null;
+                clearScreen();
+                showRound();
+                getNextMove(ref errorMessage, out roundIsOver);
+                if (errorMessage != null && !roundIsOver)
+                {
+                    showErrorMessage(errorMessage);
+                }
+            } while (!roundIsOver);
+        }
+
         private void clearScreen()
         {
             Screen.Clear();
@@ -59,7 +113,7 @@ namespace TicTacToeGameConsole
         private void getNextMove(ref string io_ErrorMessage, out bool o_RoundIsOver)
         {
             Console.WriteLine(string.Format("{0} turn: ", getPlayerName()));
-            Console.WriteLine("please insert row and column in format 'i,j' where i is the row and j is the column");
+            Console.WriteLine("What's your move? (letter and number)");
             string userInput = Console.ReadLine();
             if (userInput.ToLower() == k_StopKey)
             {
@@ -132,9 +186,10 @@ namespace TicTacToeGameConsole
         {
             clearScreen();
             showBoard();
-            Console.WriteLine("Game ended with the result:" + r_GameManager.GameState);
-            Console.WriteLine(string.Format("First player points - {0},Second player points - {1}.",
-                r_GameManager.PlayerOnePoints, r_GameManager.PlayerTwoPoints));
+            string winner = r_GameManager.GameState == Enums.eGameFinishState.FirstPlayerWon
+                                ? firstPlayerName : secondPlayerName; 
+            Console.WriteLine("Game ended - " + winner + " won this round!");
+            this.showScore();
             string userInput = null;
             bool validInput = false;
             do
@@ -150,16 +205,41 @@ namespace TicTacToeGameConsole
 
             o_PlayAnotherRound = userInput.ToLower() == "y";
 
-            //if(r_GameManager.GameState == 
-            //from manager eGameState i_RoundResult, int i_PlayerOnePoints, int i_PlayerTwoPoints,
-            //ask for new round
         }
 
         private void showEndGame()
         {
-            //clear board
-            //eGameState i_GameResult, int i_PlayerOnePoints, int i_PlayerTwoPoints
-            //goodbye!
+            this.clearScreen();
+            Console.WriteLine("Game Over!");
+            this.showScore();
+            if (r_GameManager.PlayerOnePoints > r_GameManager.PlayerTwoPoints)
+            {
+                if (r_GameManager.GameType == Enums.eGameType.PlayerVsComputer)
+                {
+                    Console.WriteLine("You Won !! :)");
+                }
+                else
+                {
+
+                    Console.WriteLine(firstPlayerName + " Won!");
+                }
+            }
+            else
+            {
+                if (r_GameManager.GameType == Enums.eGameType.PlayerVsComputer)
+                {
+
+                    Console.WriteLine("You Lose  :( ");
+                }
+                else
+                {
+
+                    Console.WriteLine(secondPlayerName + " Won!");
+                }
+            }
+
+            Console.WriteLine("Press any key to exit.");
+
         }
 
         private int getBoardSizeFromUser()
@@ -174,7 +254,9 @@ namespace TicTacToeGameConsole
         private Enums.eGameType getGameType()
         {
             Enums.eGameType gameType;
-            Console.WriteLine(@"Please select game type:
+            Console.WriteLine(@"
+Please select game type:
+
 1 - Player vs Player 
 2 - Player vs Computer");
             string userInput = Console.ReadLine();
@@ -189,17 +271,17 @@ namespace TicTacToeGameConsole
             Board.BoardGameCell[,] boardCells = r_GameManager.BoardCells;
 
             StringBuilder gameBoardStringBuilder = new StringBuilder(" ");
-            for (int i = 0 ; i < r_GameManager.BoardSize ; i++)
+            for (int i = 0; i < r_GameManager.BoardSize; i++)
             {
                 gameBoardStringBuilder.AppendFormat(" {0} ", i + 1);
             }
 
             gameBoardStringBuilder.Append(Environment.NewLine);
 
-            for (int i = 0 ; i < r_GameManager.BoardSize ; i++)
+            for (int i = 0; i < r_GameManager.BoardSize; i++)
             {
                 gameBoardStringBuilder.AppendFormat("{0}| ", (char)(i + 'A'));
-                for (int j = 0 ; j < r_GameManager.BoardSize ; j++)
+                for (int j = 0; j < r_GameManager.BoardSize; j++)
                 {
                     gameBoardStringBuilder.AppendFormat("{0}| ",
                         (boardCells[i, j].Value == Enums.eBoardCellStateValue.Blank) ?
@@ -215,44 +297,19 @@ namespace TicTacToeGameConsole
 
         private void showScore()
         {
-            int playerOnePoints = r_GameManager.PlayerOnePoints, playerTwoPoints = r_GameManager.PlayerTwoPoints;
-            //todo: Console.WriteLine("");
+            string result = string.Format(
+@"
+Total Points:
+
+{2} - {3}
+   {0}    :   {1}
+", r_GameManager.PlayerOnePoints, r_GameManager.PlayerTwoPoints, firstPlayerName, secondPlayerName);
+
+
+            Console.WriteLine(result);
         }
 
-        private void start()
-        {
-            getGameStartParameters();
-            playGame();
-            Console.ReadLine();
-        }
 
-        private void playGame()
-        {
-            bool playAnotherRound;
-            do
-            {
-                playRound();
-                showEndRound(out playAnotherRound);
-            } while (playAnotherRound);
-            showEndGame();
-        }
 
-        private void playRound()
-        {
-            bool roundIsOver;
-            r_GameManager.InitializeRound();
-            string errorMessage;
-            do
-            {
-                errorMessage = null;
-                clearScreen();
-                showRound();
-                getNextMove(ref errorMessage, out roundIsOver);
-                if (errorMessage != null && !roundIsOver)
-                {
-                    showErrorMessage(errorMessage);
-                }
-            } while (!roundIsOver);
-        }
     }
 }
