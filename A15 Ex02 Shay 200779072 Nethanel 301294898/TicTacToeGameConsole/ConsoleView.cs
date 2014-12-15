@@ -16,6 +16,7 @@ namespace TicTacToeGameConsole
         {
             r_GameManager = new GameManager();
             clearScreen();
+            Console.WriteLine("Shay is tambalul!");
             start();
         }
 
