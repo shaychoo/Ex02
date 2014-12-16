@@ -167,7 +167,13 @@
 
         private GameCell playComputerMove()
         {
-            GameCell selectedCell = r_BoardGame.GetRandomFreeCell();
+            GameCell selectedCell;
+            do
+            {
+                 selectedCell = r_BoardGame.GetRandomFreeCell();
+            }
+            while (this.isPlayerEndedGame(selectedCell,k_PlayerTwoValue));
+
             setCellState(selectedCell);
             return selectedCell;
         }

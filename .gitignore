@@ -49,3 +49,7 @@ Temporary Items
 *.exe
 *.pdb
 *.txt
+*.exe
+*.exe
+*.pdb
+*.cache
