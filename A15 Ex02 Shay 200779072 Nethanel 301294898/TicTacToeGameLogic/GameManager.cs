@@ -9,6 +9,11 @@
             get { return m_GameLogic.GameState; }
         }
 
+        public Enums.eGameFinishState FinalGameState
+        {
+            get { return m_GameLogic.FinalGameState; }
+        }
+
         public Enums.eGameType GameType
         {
             get { return m_GameLogic.GameType; }
