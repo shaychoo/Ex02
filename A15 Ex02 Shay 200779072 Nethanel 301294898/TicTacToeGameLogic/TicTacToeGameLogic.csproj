@@ -35,8 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
+    <Compile Include="BoardGame.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="GameCell.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="GameManager.cs" />
   </ItemGroup>

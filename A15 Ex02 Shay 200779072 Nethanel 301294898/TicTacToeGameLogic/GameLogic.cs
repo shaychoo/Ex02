@@ -1,76 +1,76 @@
 ﻿namespace TicTacToeGameLogic
 {
-    public class GameLogic
+    internal class GameLogic
     {
-        public const Enums.eBoardCellStateValue k_PlayerOneValue = Enums.eBoardCellStateValue.X;
-        public const Enums.eBoardCellStateValue k_PlayerTwoValue = Enums.eBoardCellStateValue.O;
-        public const int k_MinimumBoardSize = 3;
-        public const int k_MaximumBoardSize = 9;
+        internal const Enums.eCellValue k_PlayerOneValue = Enums.eCellValue.X;
+        internal const Enums.eCellValue k_PlayerTwoValue = Enums.eCellValue.O;
+        internal const int k_MinimumBoardSize = 3;
+        internal const int k_MaximumBoardSize = 9;
 
-        private readonly Board r_Board;
+        private readonly BoardGame r_BoardGame;
         private readonly Enums.eGameType r_GameType;
         private bool m_FirstPlayerStartedRound;
 
-        public GameLogic(int i_BoardSize, Enums.eGameType i_GameType)
+        internal GameLogic(int i_BoardSize, Enums.eGameType i_GameType)
         {
-            r_Board = new Board(i_BoardSize);
+            r_BoardGame = new BoardGame(i_BoardSize);
             r_GameType = i_GameType;
         }
 
-        public Enums.eGameType GameType
+        internal Enums.eGameType GameType
         {
             get { return r_GameType; }
         }
 
-        public int FirstPlayerPoints { get; private set; }
+        internal int FirstPlayerPoints { get; private set; }
 
-        public int SecondePlayerPoints { get; private set; }
+        internal int SecondePlayerPoints { get; private set; }
 
-        public bool IsFirstPlayerTurn { get; private set; }
+        internal bool IsFirstPlayerTurn { get; private set; }
 
-        public Enums.eGameFinishState GameState { get; private set; }
+        internal Enums.eGameState GameState { get; private set; }
 
-        public Enums.eGameFinishState FinalGameState
+        internal Enums.eGameState FinalGameState
         {
             get
             {
-                Enums.eGameFinishState finalGameState;
+                Enums.eGameState finalGameState;
                 if (FirstPlayerPoints > SecondePlayerPoints)
                 {
-                    finalGameState = Enums.eGameFinishState.FirstPlayerWon;
+                    finalGameState = Enums.eGameState.FirstPlayerWon;
                 }
                 else if (FirstPlayerPoints < SecondePlayerPoints)
                 {
-                    finalGameState = Enums.eGameFinishState.SecondPlayerWon;
+                    finalGameState = Enums.eGameState.SecondPlayerWon;
                 }
                 else
                 {
-                    finalGameState = Enums.eGameFinishState.Tie;
+                    finalGameState = Enums.eGameState.Tie;
                 }
                 return finalGameState;
             }
         }
 
-        public Board.BoardGameCell[,] BoradCells
+        internal GameCell[,] BoradGameCells
         {
-            get { return r_Board.BoardGameCells; }
+            get { return r_BoardGame.BoardGameCells; }
         }
 
-        public int BoradSize
+        internal int BoradSize
         {
-            get { return r_Board.BoradSize; }
+            get { return r_BoardGame.BoradSize; }
         }
 
-        public Enums.ePlayer CurrentPlayerTurn
+        internal Enums.ePlayer CurrentPlayerTurn
         {
             get { return IsFirstPlayerTurn ? Enums.ePlayer.PlayerOne : Enums.ePlayer.PlayerTwo; }
         }
 
-        internal void NextPlayerMove(Board.BoardGameCell i_BoardGameCell, out bool o_RoundIsOver)
+        internal void NextPlayerMove(GameCell i_GameCell, out bool o_RoundIsOver)
         {
-            setCellState(i_BoardGameCell);
+            setCellState(i_GameCell);
             o_RoundIsOver = false;
-            bool isPlayerLost = isPlayerEndedGame(i_BoardGameCell, i_BoardGameCell.Value);
+            bool isPlayerLost = isPlayerEndedGame(i_GameCell, i_GameCell.Value);
             if (isPlayerLost)
             {
                 currentPlayerLose();
@@ -78,7 +78,7 @@
             }
             else
             {
-                if (r_Board.IsBoardFull)
+                if (r_BoardGame.IsBoardFull)
                 {
                     setTie(out o_RoundIsOver);
                 }
@@ -103,7 +103,7 @@
 
         internal void InitializeRound()
         {
-            r_Board.ClearBorad();
+            r_BoardGame.ClearBorad();
             switch (GameType)
             {
                 case Enums.eGameType.PlayerVsPlayer:
@@ -127,13 +127,13 @@
         private void setTie(out bool o_RoundIsOver)
         {
             o_RoundIsOver = true;
-            GameState = Enums.eGameFinishState.Tie;
+            GameState = Enums.eGameState.Tie;
         }
 
         private void computerPlayingLogic(ref bool io_RoundIsOver)
         {
             togglePlayers();
-            Board.BoardGameCell computerSelectedCell = playComputerMove();
+            GameCell computerSelectedCell = playComputerMove();
             bool isComputerLost = isPlayerEndedGame(computerSelectedCell, computerSelectedCell.Value);
             if (isComputerLost)
             {
@@ -142,7 +142,7 @@
             }
             else
             {
-                if (r_Board.IsBoardFull)
+                if (r_BoardGame.IsBoardFull)
                 {
                     setTie(out io_RoundIsOver);
                 }
@@ -153,11 +153,11 @@
             }
         }
 
-        private void setCellState(Board.BoardGameCell i_BoardGameCell)
+        private void setCellState(GameCell i_GameCell)
         {
-            Enums.eBoardCellStateValue cellState = CurrentPlayerTurn == Enums.ePlayer.PlayerOne
+            Enums.eCellValue cellState = CurrentPlayerTurn == Enums.ePlayer.PlayerOne
                 ? k_PlayerOneValue : k_PlayerTwoValue;
-            r_Board.SetCellState(i_BoardGameCell, cellState);
+            r_BoardGame.SetCellState(i_GameCell, cellState);
         }
 
         private void togglePlayers()
@@ -165,29 +165,29 @@
             IsFirstPlayerTurn = !IsFirstPlayerTurn;
         }
 
-        private Board.BoardGameCell playComputerMove()
+        private GameCell playComputerMove()
         {
-            Board.BoardGameCell selectedCell = r_Board.GetRandomFreeCell();
+            GameCell selectedCell = r_BoardGame.GetRandomFreeCell();
             setCellState(selectedCell);
             return selectedCell;
         }
 
-        private bool isPlayerEndedGame(Board.BoardGameCell i_BoardGameCell,
-            Enums.eBoardCellStateValue i_WantedCellState)
+        private bool isPlayerEndedGame(GameCell i_GameCell,
+            Enums.eCellValue i_WantedCellState)
         {
-            return rowEnded(i_BoardGameCell, i_WantedCellState) ||
-                   columnEnded(i_BoardGameCell, i_WantedCellState) ||
-                   diagonalEnded(i_BoardGameCell, i_WantedCellState);
+            return rowEnded(i_GameCell, i_WantedCellState) ||
+                   columnEnded(i_GameCell, i_WantedCellState) ||
+                   diagonalEnded(i_GameCell, i_WantedCellState);
         }
 
-        private bool diagonalEnded(Board.BoardGameCell i_BoardGameCell, Enums.eBoardCellStateValue i_WantedCellState)
+        private bool diagonalEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool firstDiagonalIsTrue = true, secondDiagonal = true;
-            if (i_BoardGameCell.RowIndex == i_BoardGameCell.ColumnIndex)
+            if (i_GameCell.RowIndex == i_GameCell.ColumnIndex)
             {
                 for (int i = 0 ; i < BoradSize ; i++)
                 {
-                    if (i_BoardGameCell != BoradCells[i, i] && BoradCells[i, i].Value != i_WantedCellState)
+                    if (i_GameCell != BoradGameCells[i, i] && BoradGameCells[i, i].Value != i_WantedCellState)
                     {
                         firstDiagonalIsTrue = false;
                         break;
@@ -198,12 +198,12 @@
             {
                 firstDiagonalIsTrue = false;
             }
-            if (i_BoardGameCell.RowIndex + i_BoardGameCell.ColumnIndex == BoradSize - 1)
+            if (i_GameCell.RowIndex + i_GameCell.ColumnIndex == BoradSize - 1)
             {
                 for (int i = 0 ; i < BoradSize ; i++)
                 {
-                    if (i_BoardGameCell != BoradCells[i, BoradSize - 1 - i]
-                        && BoradCells[i, BoradSize - 1 - i].Value != i_WantedCellState)
+                    if (i_GameCell != BoradGameCells[i, BoradSize - 1 - i]
+                        && BoradGameCells[i, BoradSize - 1 - i].Value != i_WantedCellState)
                     {
                         secondDiagonal = false;
                         break;
@@ -217,13 +217,13 @@
             return firstDiagonalIsTrue || secondDiagonal;
         }
 
-        private bool columnEnded(Board.BoardGameCell i_BoardGameCell, Enums.eBoardCellStateValue i_WantedCellState)
+        private bool columnEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool result = true;
             for (int i = 0 ; i < BoradSize ; i++)
             {
-                if (i_BoardGameCell != BoradCells[i_BoardGameCell.RowIndex, i]
-                    && BoradCells[i_BoardGameCell.RowIndex, i].Value != i_WantedCellState)
+                if (i_GameCell != BoradGameCells[i_GameCell.RowIndex, i]
+                    && BoradGameCells[i_GameCell.RowIndex, i].Value != i_WantedCellState)
                 {
                     result = false;
                     break;
@@ -232,13 +232,13 @@
             return result;
         }
 
-        private bool rowEnded(Board.BoardGameCell i_BoardGameCell, Enums.eBoardCellStateValue i_WantedCellState)
+        private bool rowEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool result = true;
             for (int i = 0 ; i < BoradSize ; i++)
             {
-                if (i_BoardGameCell != BoradCells[i, i_BoardGameCell.ColumnIndex]
-                    && BoradCells[i, i_BoardGameCell.ColumnIndex].Value != i_WantedCellState)
+                if (i_GameCell != BoradGameCells[i, i_GameCell.ColumnIndex]
+                    && BoradGameCells[i, i_GameCell.ColumnIndex].Value != i_WantedCellState)
                 {
                     result = false;
                     break;
@@ -252,12 +252,12 @@
             if (IsFirstPlayerTurn)
             {
                 SecondePlayerPoints++;
-                GameState = Enums.eGameFinishState.SecondPlayerWon;
+                GameState = Enums.eGameState.SecondPlayerWon;
             }
             else
             {
                 FirstPlayerPoints++;
-                GameState = Enums.eGameFinishState.FirstPlayerWon;
+                GameState = Enums.eGameState.FirstPlayerWon;
             }
         }
     }

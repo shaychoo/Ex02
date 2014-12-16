@@ -11,24 +11,6 @@ namespace TicTacToeGameConsole
         private const string k_PlayerOneName = "Player 1";
         private const string k_PlayerTwoName = "Player 2";
 
-        private string firstPlayerName
-        {
-            get
-            {
-                return r_GameManager.GameType == Enums.eGameType.PlayerVsPlayer
-                                   ? k_PlayerOneName : Enums.ePlayer.Player.ToString();
-            }
-
-        }
-
-        private string secondPlayerName
-        {
-            get
-            {
-                return r_GameManager.GameType == Enums.eGameType.PlayerVsPlayer
-                                       ? k_PlayerTwoName : Enums.ePlayer.Computer.ToString();
-            }
-        }
         private readonly GameManager r_GameManager;
 
         public ConsoleView()
@@ -38,11 +20,28 @@ namespace TicTacToeGameConsole
             start();
         }
 
+        private string firstPlayerName
+        {
+            get
+            {
+                return r_GameManager.GameType == Enums.eGameType.PlayerVsPlayer
+                    ? k_PlayerOneName : Enums.ePlayer.Player.ToString();
+            }
+        }
+
+        private string secondPlayerName
+        {
+            get
+            {
+                return r_GameManager.GameType == Enums.eGameType.PlayerVsPlayer
+                    ? k_PlayerTwoName : Enums.ePlayer.Computer.ToString();
+            }
+        }
+
         private void start()
         {
             getGameStartParameters();
             playGame();
-            
         }
 
         private void getGameStartParameters()
@@ -188,18 +187,18 @@ namespace TicTacToeGameConsole
             showBoard();
             switch (r_GameManager.GameState)
             {
-                case Enums.eGameFinishState.Tie:
+                case Enums.eGameState.Tie:
                     Console.WriteLine("Round ended with a tie!");
                     break;
-                case Enums.eGameFinishState.FirstPlayerWon:
-                case Enums.eGameFinishState.SecondPlayerWon:
-                    string winner = r_GameManager.GameState == Enums.eGameFinishState.FirstPlayerWon
-                                ? firstPlayerName : secondPlayerName;
+                case Enums.eGameState.FirstPlayerWon:
+                case Enums.eGameState.SecondPlayerWon:
+                    string winner = r_GameManager.GameState == Enums.eGameState.FirstPlayerWon
+                        ? firstPlayerName : secondPlayerName;
                     Console.WriteLine("Round ended - " + winner + " won this round!");
                     break;
             }
 
-            this.showScore();
+            showScore();
             string userInput = null;
             bool validInput = false;
             do
@@ -214,20 +213,19 @@ namespace TicTacToeGameConsole
             } while (!validInput);
 
             o_PlayAnotherRound = userInput.ToLower() == "y";
-
         }
 
         private void showEndGame()
         {
-            this.clearScreen();
+            clearScreen();
             Console.WriteLine("Game Over!");
-            this.showScore();
+            showScore();
             switch (r_GameManager.FinalGameState)
             {
-                case Enums.eGameFinishState.Tie:
+                case Enums.eGameState.Tie:
                     Console.WriteLine("Game ended with a tie!");
                     break;
-                case Enums.eGameFinishState.FirstPlayerWon:
+                case Enums.eGameState.FirstPlayerWon:
                     if (r_GameManager.GameType == Enums.eGameType.PlayerVsComputer)
                     {
                         Console.WriteLine("You Won !! :)");
@@ -237,7 +235,7 @@ namespace TicTacToeGameConsole
                         Console.WriteLine(firstPlayerName + " Won!");
                     }
                     break;
-                case Enums.eGameFinishState.SecondPlayerWon:
+                case Enums.eGameState.SecondPlayerWon:
                     if (r_GameManager.GameType == Enums.eGameType.PlayerVsComputer)
                     {
                         Console.WriteLine("You Lose  :( ");
@@ -279,23 +277,23 @@ Please select game type:
 
         private void showBoard()
         {
-            Board.BoardGameCell[,] boardCells = r_GameManager.BoardCells;
+            GameCell[,] boardCells = r_GameManager.BoardGameCells;
 
             StringBuilder gameBoardStringBuilder = new StringBuilder(" ");
-            for (int i = 0; i < r_GameManager.BoardSize; i++)
+            for (int i = 0 ; i < r_GameManager.BoardSize ; i++)
             {
                 gameBoardStringBuilder.AppendFormat(" {0} ", i + 1);
             }
 
             gameBoardStringBuilder.Append(Environment.NewLine);
 
-            for (int i = 0; i < r_GameManager.BoardSize; i++)
+            for (int i = 0 ; i < r_GameManager.BoardSize ; i++)
             {
                 gameBoardStringBuilder.AppendFormat("{0}| ", (char)(i + 'A'));
-                for (int j = 0; j < r_GameManager.BoardSize; j++)
+                for (int j = 0 ; j < r_GameManager.BoardSize ; j++)
                 {
                     gameBoardStringBuilder.AppendFormat("{0}| ",
-                        (boardCells[i, j].Value == Enums.eBoardCellStateValue.Blank) ?
+                        (boardCells[i, j].Value == Enums.eCellValue.Blank) ?
                             " " :
                             boardCells[i, j].Value.ToString());
                 }
@@ -309,18 +307,14 @@ Please select game type:
         private void showScore()
         {
             string result = string.Format(
-@"
+                @"
 Total Points:
 
 {2} - {3}
    {0}    :   {1}
 ", r_GameManager.PlayerOnePoints, r_GameManager.PlayerTwoPoints, firstPlayerName, secondPlayerName);
 
-
             Console.WriteLine(result);
         }
-
-
-
     }
 }

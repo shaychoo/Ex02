@@ -2,14 +2,14 @@
 {
     public class Enums
     {
-        public enum eBoardCellStateValue
+        public enum eCellValue
         {
             Blank,
             X,
             O,
         }
 
-        public enum eGameFinishState
+        public enum eGameState
         {
             Tie,
             FirstPlayerWon,

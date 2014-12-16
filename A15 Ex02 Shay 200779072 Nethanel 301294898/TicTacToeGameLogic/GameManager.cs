@@ -4,12 +4,12 @@
     {
         private GameLogic m_GameLogic;
 
-        public Enums.eGameFinishState GameState
+        public Enums.eGameState GameState
         {
             get { return m_GameLogic.GameState; }
         }
 
-        public Enums.eGameFinishState FinalGameState
+        public Enums.eGameState FinalGameState
         {
             get { return m_GameLogic.FinalGameState; }
         }
@@ -24,9 +24,9 @@
             get { return m_GameLogic.BoradSize; }
         }
 
-        public Board.BoardGameCell[,] BoardCells
+        public GameCell[,] BoardGameCells
         {
-            get { return m_GameLogic.BoradCells; }
+            get { return m_GameLogic.BoradGameCells; }
         }
 
         public int PlayerOnePoints
@@ -75,15 +75,15 @@
             }
             else
             {
-                Board.BoardGameCell wantedBoardGameCell = BoardCells[i_RowIndex, i_ColumnIndex];
-                if (!wantedBoardGameCell.IsFree)
+                GameCell wantedGameCell = BoardGameCells[i_RowIndex, i_ColumnIndex];
+                if (!wantedGameCell.IsFree)
                 {
                     io_ErrorMessage = "This cell is already taken!";
                     o_RoundIsOver = false;
                 }
                 else
                 {
-                    m_GameLogic.NextPlayerMove(wantedBoardGameCell, out o_RoundIsOver);
+                    m_GameLogic.NextPlayerMove(wantedGameCell, out o_RoundIsOver);
                 }
             }
         }
