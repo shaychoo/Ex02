@@ -11,6 +11,8 @@ namespace TicTacToeGameLogic
         internal BoardGame(int i_Size)
         {
             BoradSize = i_Size;
+            initializeBoardGameCells();
+            m_FreeCellsList = new List<GameCell>(BoradSize * BoradSize);
         }
 
         internal GameCell[,] BoardGameCells { get; private set; }
@@ -23,16 +25,9 @@ namespace TicTacToeGameLogic
 
         internal void ClearBorad()
         {
-            BoardGameCells = new GameCell[BoradSize, BoradSize];
-            m_FreeCellsList = new List<GameCell>(BoradSize * BoradSize);
-
-            for (int row = 0 ; row < BoradSize ; row++)
+            foreach (GameCell boardGameCell in BoardGameCells)
             {
-                for (int column = 0 ; column < BoradSize ; column++)
-                {
-                    BoardGameCells[row, column] = new GameCell(row, column);
-                    m_FreeCellsList.Add(BoardGameCells[row, column]);
-                }
+                SetCellState(boardGameCell,Enums.eCellValue.Blank);
             }
         }
 
@@ -57,6 +52,19 @@ namespace TicTacToeGameLogic
             int randomValue = r_Random.Next(0, m_FreeCellsList.Count - 1);
             GameCell randomGameCell = m_FreeCellsList[randomValue];
             return randomGameCell;
+        }
+
+        private void initializeBoardGameCells()
+        {
+            BoardGameCells = new GameCell[BoradSize, BoradSize];
+            
+            for (int row = 0; row < BoradSize; row++)
+            {
+                for (int column = 0; column < BoradSize; column++)
+                {
+                    BoardGameCells[row, column] = new GameCell(row, column);
+                }
+            }
         }
     }
 }
