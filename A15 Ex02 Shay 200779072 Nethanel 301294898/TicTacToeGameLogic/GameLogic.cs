@@ -1,4 +1,7 @@
-﻿namespace TicTacToeGameLogic
+﻿using System;
+using System.Collections.Generic;
+
+namespace TicTacToeGameLogic
 {
     internal class GameLogic
     {
@@ -9,6 +12,7 @@
 
         private readonly BoardGame r_BoardGame;
         private readonly Enums.eGameType r_GameType;
+        private readonly Random r_Random = new Random();
         private bool m_FirstPlayerStartedRound;
 
         internal GameLogic(int i_BoardSize, Enums.eGameType i_GameType)
@@ -78,7 +82,7 @@
             }
             else
             {
-                if (r_BoardGame.IsBoardFull)
+                if (r_BoardGame.IsThereNoMoreFreeCells)
                 {
                     setTie(out o_RoundIsOver);
                 }
@@ -142,7 +146,7 @@
             }
             else
             {
-                if (r_BoardGame.IsBoardFull)
+                if (r_BoardGame.IsThereNoMoreFreeCells)
                 {
                     setTie(out io_RoundIsOver);
                 }
@@ -167,15 +171,41 @@
 
         private GameCell playComputerMove()
         {
+            bool continueSearching = true;
+            List<GameCell> selectedUnWantedCell = new List<GameCell>(r_BoardGame.FreeCellsList.Count);
             GameCell selectedCell;
             do
             {
-                 selectedCell = r_BoardGame.GetRandomFreeCell();
+                selectedCell = getRandomFreeCell();
+                if (isPlayerEndedGame(selectedCell, k_PlayerTwoValue))
+                {
+                    selectedUnWantedCell.Add(selectedCell);
+                    r_BoardGame.FreeCellsList.Remove(selectedCell);
+                    if (r_BoardGame.IsThereNoMoreFreeCells)
+                    {
+                        continueSearching = false;
+                    }
+                }
+                else
+                {
+                    continueSearching = false;
+                }
+                if (!continueSearching)
+                {
+                    r_BoardGame.FreeCellsList.AddRange(selectedUnWantedCell);
+                }
             }
-            while (this.isPlayerEndedGame(selectedCell,k_PlayerTwoValue));
+            while (continueSearching);
 
             setCellState(selectedCell);
             return selectedCell;
+        }
+
+        private GameCell getRandomFreeCell()
+        {
+            int randomValue = r_Random.Next(0, r_BoardGame.FreeCellsList.Count);
+            GameCell randomGameCell = r_BoardGame.FreeCellsList[randomValue];
+            return randomGameCell;
         }
 
         private bool isPlayerEndedGame(GameCell i_GameCell,
@@ -191,7 +221,7 @@
             bool firstDiagonalIsTrue = true, secondDiagonal = true;
             if (i_GameCell.RowIndex == i_GameCell.ColumnIndex)
             {
-                for (int i = 0 ; i < BoradSize ; i++)
+                for (int i = 0; i < BoradSize; i++)
                 {
                     if (i_GameCell != BoradGameCells[i, i] && BoradGameCells[i, i].Value != i_WantedCellState)
                     {
@@ -206,7 +236,7 @@
             }
             if (i_GameCell.RowIndex + i_GameCell.ColumnIndex == BoradSize - 1)
             {
-                for (int i = 0 ; i < BoradSize ; i++)
+                for (int i = 0; i < BoradSize; i++)
                 {
                     if (i_GameCell != BoradGameCells[i, BoradSize - 1 - i]
                         && BoradGameCells[i, BoradSize - 1 - i].Value != i_WantedCellState)
@@ -226,7 +256,7 @@
         private bool columnEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool result = true;
-            for (int i = 0 ; i < BoradSize ; i++)
+            for (int i = 0; i < BoradSize; i++)
             {
                 if (i_GameCell != BoradGameCells[i_GameCell.RowIndex, i]
                     && BoradGameCells[i_GameCell.RowIndex, i].Value != i_WantedCellState)
@@ -241,7 +271,7 @@
         private bool rowEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool result = true;
-            for (int i = 0 ; i < BoradSize ; i++)
+            for (int i = 0; i < BoradSize; i++)
             {
                 if (i_GameCell != BoradGameCells[i, i_GameCell.ColumnIndex]
                     && BoradGameCells[i, i_GameCell.ColumnIndex].Value != i_WantedCellState)
