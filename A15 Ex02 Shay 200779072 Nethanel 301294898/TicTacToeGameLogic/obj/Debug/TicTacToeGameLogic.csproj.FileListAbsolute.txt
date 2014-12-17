@@ -1,4 +1,0 @@
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\bin\Debug\TicTacToeGameLogic.dll
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\bin\Debug\TicTacToeGameLogic.pdb
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\obj\Debug\TicTacToeGameLogic.dll
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameLogic\obj\Debug\TicTacToeGameLogic.pdb

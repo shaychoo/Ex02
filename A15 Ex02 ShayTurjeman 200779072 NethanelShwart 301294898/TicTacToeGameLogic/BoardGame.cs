@@ -4,16 +4,17 @@ namespace TicTacToeGameLogic
 {
     internal class BoardGame
     {
-        internal List<GameCell> FreeCellsList { get; set; }
-        internal GameCell[,] BoardGameCells { get; private set; }
-        internal int BoradSize { get; private set; }
-
         internal BoardGame(int i_Size)
         {
             BoradSize = i_Size;
             initializeBoardGameCells();
             FreeCellsList = new List<GameCell>(BoradSize * BoradSize);
         }
+
+        internal List<GameCell> FreeCellsList { get; set; }
+        internal GameCell[,] BoardGameCells { get; private set; }
+        internal int BoradSize { get; private set; }
+        internal GameCell LastSelectedCell { get; private set; }
 
         internal bool IsThereNoMoreFreeCells
         {
@@ -22,9 +23,10 @@ namespace TicTacToeGameLogic
 
         internal void ClearBorad()
         {
+            LastSelectedCell = null;
             foreach (GameCell boardGameCell in BoardGameCells)
             {
-                SetCellState(boardGameCell,Enums.eCellValue.Blank);
+                SetCellState(boardGameCell, Enums.eCellValue.Blank);
             }
         }
 
@@ -40,17 +42,18 @@ namespace TicTacToeGameLogic
             }
             else
             {
+                LastSelectedCell = i_GameCell;
                 FreeCellsList.Remove(i_GameCell);
             }
         }
-        
+
         private void initializeBoardGameCells()
         {
             BoardGameCells = new GameCell[BoradSize, BoradSize];
-            
-            for (int row = 0; row < BoradSize; row++)
+
+            for (int row = 0 ; row < BoradSize ; row++)
             {
-                for (int column = 0; column < BoradSize; column++)
+                for (int column = 0 ; column < BoradSize ; column++)
                 {
                     BoardGameCells[row, column] = new GameCell(row, column);
                 }

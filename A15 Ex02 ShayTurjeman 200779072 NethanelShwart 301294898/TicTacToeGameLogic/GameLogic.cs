@@ -26,6 +26,11 @@ namespace TicTacToeGameLogic
             get { return r_GameType; }
         }
 
+        internal GameCell LastSelectedCell
+        {
+            get { return r_BoardGame.LastSelectedCell; }
+        }
+
         internal int FirstPlayerPoints { get; private set; }
 
         internal int SecondePlayerPoints { get; private set; }
@@ -172,17 +177,34 @@ namespace TicTacToeGameLogic
         private GameCell playComputerMove()
         {
             bool continueSearching = true;
-            List<GameCell> selectedUnWantedCell = new List<GameCell>(r_BoardGame.FreeCellsList.Count);
-            GameCell selectedCell;
+            List<GameCell> selectedUnWantedCells = new List<GameCell>(r_BoardGame.FreeCellsList.Count);
+            GameCell selectedCell, preferredSelecteCell = null;
+            bool thisCellEndsGameForComputer, thisCellEndsGameForPlayer;
             do
             {
                 selectedCell = getRandomFreeCell();
-                if (isPlayerEndedGame(selectedCell, k_PlayerTwoValue))
+                thisCellEndsGameForComputer = isPlayerEndedGame(selectedCell, k_PlayerTwoValue);
+                thisCellEndsGameForPlayer = isPlayerEndedGame(selectedCell, k_PlayerOneValue);
+
+                //trying to get a cell that doesn't end the game for computer
+                // and doesn't help the player
+                if (thisCellEndsGameForComputer || thisCellEndsGameForPlayer)
                 {
-                    selectedUnWantedCell.Add(selectedCell);
+                    selectedUnWantedCells.Add(selectedCell);
                     r_BoardGame.FreeCellsList.Remove(selectedCell);
+
+                    //prefer to select a cell that helps the player
+                    //than one that end the game for computer
+                    if (thisCellEndsGameForPlayer)
+                    {
+                        preferredSelecteCell = selectedCell;
+                    }
                     if (r_BoardGame.IsThereNoMoreFreeCells)
                     {
+                        if (preferredSelecteCell != null)
+                        {
+                            selectedCell = preferredSelecteCell;
+                        }
                         continueSearching = false;
                     }
                 }
@@ -192,10 +214,9 @@ namespace TicTacToeGameLogic
                 }
                 if (!continueSearching)
                 {
-                    r_BoardGame.FreeCellsList.AddRange(selectedUnWantedCell);
+                    r_BoardGame.FreeCellsList.AddRange(selectedUnWantedCells);
                 }
-            }
-            while (continueSearching);
+            } while (continueSearching);
 
             setCellState(selectedCell);
             return selectedCell;
@@ -221,7 +242,7 @@ namespace TicTacToeGameLogic
             bool firstDiagonalIsTrue = true, secondDiagonal = true;
             if (i_GameCell.RowIndex == i_GameCell.ColumnIndex)
             {
-                for (int i = 0; i < BoradSize; i++)
+                for (int i = 0 ; i < BoradSize ; i++)
                 {
                     if (i_GameCell != BoradGameCells[i, i] && BoradGameCells[i, i].Value != i_WantedCellState)
                     {
@@ -236,7 +257,7 @@ namespace TicTacToeGameLogic
             }
             if (i_GameCell.RowIndex + i_GameCell.ColumnIndex == BoradSize - 1)
             {
-                for (int i = 0; i < BoradSize; i++)
+                for (int i = 0 ; i < BoradSize ; i++)
                 {
                     if (i_GameCell != BoradGameCells[i, BoradSize - 1 - i]
                         && BoradGameCells[i, BoradSize - 1 - i].Value != i_WantedCellState)
@@ -256,7 +277,7 @@ namespace TicTacToeGameLogic
         private bool columnEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool result = true;
-            for (int i = 0; i < BoradSize; i++)
+            for (int i = 0 ; i < BoradSize ; i++)
             {
                 if (i_GameCell != BoradGameCells[i_GameCell.RowIndex, i]
                     && BoradGameCells[i_GameCell.RowIndex, i].Value != i_WantedCellState)
@@ -271,7 +292,7 @@ namespace TicTacToeGameLogic
         private bool rowEnded(GameCell i_GameCell, Enums.eCellValue i_WantedCellState)
         {
             bool result = true;
-            for (int i = 0; i < BoradSize; i++)
+            for (int i = 0 ; i < BoradSize ; i++)
             {
                 if (i_GameCell != BoradGameCells[i, i_GameCell.ColumnIndex]
                     && BoradGameCells[i, i_GameCell.ColumnIndex].Value != i_WantedCellState)

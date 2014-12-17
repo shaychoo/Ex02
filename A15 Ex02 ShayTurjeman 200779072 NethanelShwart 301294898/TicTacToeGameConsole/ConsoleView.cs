@@ -62,10 +62,17 @@ namespace TicTacToeGameConsole
             clearScreen();
         }
 
-        private string getPlayerName()
+        private string getCurrentPlayerName()
         {
             string playerName = r_GameManager.CurrentPlayerTurn == Enums.ePlayer.PlayerOne
-                ? k_PlayerOneName : k_PlayerTwoName;
+                ? firstPlayerName : secondPlayerName;
+            return playerName;
+        }
+
+        private string getOtherPlayerName()
+        {
+            string playerName = r_GameManager.CurrentPlayerTurn != Enums.ePlayer.PlayerOne
+                ? firstPlayerName : secondPlayerName;
             return playerName;
         }
 
@@ -111,7 +118,14 @@ namespace TicTacToeGameConsole
 
         private void getNextMove(ref string io_ErrorMessage, out bool o_RoundIsOver)
         {
-            Console.WriteLine(string.Format("{0} turn: ", getPlayerName()));
+            if (r_GameManager.LastSelectedCell != null)
+            {
+                char row = (char)(r_GameManager.LastSelectedCell.RowIndex + 'A');
+                string column = (r_GameManager.LastSelectedCell.ColumnIndex + 1).ToString();
+                Console.WriteLine(string.Format("{0} played: {1} , {2}{3} ", getOtherPlayerName(), row, column,
+                    Environment.NewLine));
+            }
+            Console.WriteLine(string.Format("{0} turn: ", getCurrentPlayerName()));
             Console.WriteLine("What's your move? (letter and number)");
             string userInput = Console.ReadLine();
             if (userInput.ToLower() == k_StopKey)

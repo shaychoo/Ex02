@@ -8,8 +8,8 @@
             ColumnIndex = i_ColumnIndex;
         }
 
-        internal int RowIndex { get; private set; }
-        internal int ColumnIndex { get; private set; }
+        public int RowIndex { get; private set; }
+        public int ColumnIndex { get; private set; }
 
         internal bool IsFree
         {

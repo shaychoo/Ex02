@@ -19,6 +19,11 @@
             get { return m_GameLogic.GameType; }
         }
 
+        public GameCell LastSelectedCell
+        {
+            get { return m_GameLogic.LastSelectedCell; }
+        }
+
         public int BoardSize
         {
             get { return m_GameLogic.BoradSize; }

@@ -1,8 +1,0 @@
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameConsole.exe
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameConsole.pdb
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\Ex02.ConsoleUtils.dll
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameLogic.dll
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\bin\Debug\TicTacToeGameLogic.pdb
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.csprojResolveAssemblyReference.cache
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.exe
-C:\Git\Ex02\A15 Ex02 Shay 200779072 Nethanel 301294898\TicTacToeGameConsole\obj\Debug\TicTacToeGameConsole.pdb
