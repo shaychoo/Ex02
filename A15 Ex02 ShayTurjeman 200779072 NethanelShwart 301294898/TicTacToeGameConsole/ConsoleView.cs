@@ -207,7 +207,7 @@ namespace TicTacToeGameConsole
                 case Enums.eGameState.FirstPlayerWon:
                 case Enums.eGameState.SecondPlayerWon:
                     string winner = r_GameManager.GameState == Enums.eGameState.FirstPlayerWon
-                        ? firstPlayerName : secondPlayerName;
+                        ? secondPlayerName : firstPlayerName;
                     Console.WriteLine("Round ended - " + winner + " won this round!");
                     break;
             }
@@ -242,7 +242,7 @@ namespace TicTacToeGameConsole
                 case Enums.eGameState.FirstPlayerWon:
                     if (r_GameManager.GameType == Enums.eGameType.PlayerVsComputer)
                     {
-                        Console.WriteLine("You Won !! :)");
+						Console.WriteLine("You Lose  :( ");
                     }
                     else
                     {
@@ -252,7 +252,7 @@ namespace TicTacToeGameConsole
                 case Enums.eGameState.SecondPlayerWon:
                     if (r_GameManager.GameType == Enums.eGameType.PlayerVsComputer)
                     {
-                        Console.WriteLine("You Lose  :( ");
+						Console.WriteLine("You Won !! :)");
                     }
                     else
                     {
@@ -326,7 +326,7 @@ Total Points:
 
 {2} - {3}
    {0}    :   {1}
-", r_GameManager.PlayerOnePoints, r_GameManager.PlayerTwoPoints, firstPlayerName, secondPlayerName);
+", r_GameManager.PlayerOnePoints, r_GameManager.PlayerTwoPoints, secondPlayerName, firstPlayerName);
 
             Console.WriteLine(result);
         }
